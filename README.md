@@ -10,7 +10,7 @@ WMRichTextEditor是一款Android端文本编辑器，目前支持16种编排格�
 
 ## Demo截图
 
-  <img src="https://img2020.cnblogs.com/blog/1902279/202006/1902279-20200607001143829-969228559.png"  alt="APP图标" /><img src="https://img2020.cnblogs.com/blog/1902279/202006/1902279-20200607001143829-969228559.png"  alt="APP图标" /><img src="https://img2020.cnblogs.com/blog/1902279/202006/1902279-20200607001143829-969228559.png"  alt="APP图标" />
+  <img src="https://img2020.cnblogs.com/blog/1902279/202006/1902279-20200606133644333-1113207442.png"  alt="APP图标" /><img src="https://img2020.cnblogs.com/blog/1902279/202006/1902279-20200606133811495-290653340.png"  alt="APP图标" /><img src="https://img2020.cnblogs.com/blog/1902279/202006/1902279-20200606133916353-669985588.png"  alt="APP图标" />
 
 ## 功能特性
 
