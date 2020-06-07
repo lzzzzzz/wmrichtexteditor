@@ -32,4 +32,4 @@ WMRichTextEditor是一款Android端文本编辑器，目前支持16种编排格�
 请查看博客的[开始使用](https://www.cnblogs.com/WideMouth/p/13049581.html)
 
 ## WMRichTextEditor Demo APP 安装包下载
-点击链接下载：[http://cdn.qmuiteam.com/download/android/latest](http://cdn.qmuiteam.com/download/android/latest)
+点击链接下载：[https://files.cnblogs.com/files/WideMouth/demo-release.apk](https://files.cnblogs.com/files/WideMouth/demo-release.apk)
