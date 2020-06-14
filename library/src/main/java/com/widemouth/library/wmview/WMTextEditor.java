@@ -97,13 +97,14 @@ public class WMTextEditor extends LinearLayout {
         ((WMToolImage) toolImage).onActivityResult(data);
     }
 
-    public void setEditable(boolean editable) {
+    public WMTextEditor setEditable(boolean editable) {
         editText.setEditable(editable);
         if (editable) {
             toolContainer.setVisibility(VISIBLE);
         } else {
             toolContainer.setVisibility(GONE);
         }
+        return this;
     }
 
     public WMEditText getEditText() {
