@@ -91,7 +91,7 @@ public class WMEditText extends AppCompatEditText {
 //        this.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         this.setInputType(EditorInfo.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_FLAG_MULTI_LINE
                 | EditorInfo.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-//        addTextChangedListener(textWatcher);
+        addTextChangedListener(textWatcher);
     }
 
     @Override
