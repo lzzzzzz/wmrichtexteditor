@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -39,6 +40,9 @@ public class WMToolImage extends WMToolItem {
 
     private Context context;
 
+    private Fragment fragment;
+
+
     @Override
     public void applyStyle(int start, int end) {
 
@@ -55,8 +59,11 @@ public class WMToolImage extends WMToolItem {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Matisse.from((Activity) context)
-                        .choose(MimeType.ofImage(), false)
+                Matisse matisse = Matisse.from((Activity) context);
+                if (fragment != null) {
+                    matisse = Matisse.from(fragment);
+                }
+                matisse.choose(MimeType.ofImage(), false)
                         .countable(true)
                         .capture(true)
                         .captureStrategy(
@@ -105,7 +112,7 @@ public class WMToolImage extends WMToolItem {
 
     }
 
-    public void insertImage(final Object src, final WMImageSpan.ImageType type) {
+    private void insertImage(final Object src, final WMImageSpan.ImageType type) {
         // Note for a possible bug:
         // There may be a possible bug here, it is related to:
         //   https://issuetracker.google.com/issues/67102093
@@ -129,7 +136,7 @@ public class WMToolImage extends WMToolItem {
 
         SimpleTarget myTarget = new SimpleTarget<Bitmap>() {
             @Override
-            public void onResourceReady(Bitmap bitmap, Transition<? super Bitmap> transition) {
+            public void onResourceReady(@NonNull Bitmap bitmap, Transition<? super Bitmap> transition) {
                 if (bitmap == null) {
                     return;
                 }
@@ -171,5 +178,9 @@ public class WMToolImage extends WMToolItem {
         text.setSpan(imageSpan, 1, 8, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         editable.replace(start, end, text);
 
+    }
+
+    public void setupWithFragment(Fragment fragment) {
+        this.fragment = fragment;
     }
 }

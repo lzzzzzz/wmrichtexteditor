@@ -247,6 +247,11 @@ public class WMHtml {
      */
     public static Spanned fromHtml(String source, int flags, ImageGetter imageGetter,
                                    TagHandler tagHandler) {
+        return fromHtml(source, flags, imageGetter, tagHandler, 0);
+    }
+
+    public static Spanned fromHtml(String source, int flags, ImageGetter imageGetter,
+                                   TagHandler tagHandler, int textSizeOffset) {
         Parser parser = new Parser();
         try {
             parser.setProperty(Parser.schemaProperty, HtmlParser.schema);
@@ -259,7 +264,7 @@ public class WMHtml {
         }
 
         HtmlToSpannedConverter converter =
-                new HtmlToSpannedConverter(source, imageGetter, tagHandler, parser, flags);
+                new HtmlToSpannedConverter(source, imageGetter, tagHandler, parser, flags, textSizeOffset);
         return converter.convert();
     }
 
@@ -824,6 +829,7 @@ class HtmlToSpannedConverter implements ContentHandler {
     private WMHtml.ImageGetter mImageGetter;
     private WMHtml.TagHandler mTagHandler;
     private int mFlags;
+    private static int mTextSizeOffset;
 
     private static Pattern sTextAlignPattern;
     private static Pattern sFontSizePattern;
@@ -927,13 +933,15 @@ class HtmlToSpannedConverter implements ContentHandler {
     }
 
     public HtmlToSpannedConverter(String source, WMHtml.ImageGetter imageGetter,
-                                  WMHtml.TagHandler tagHandler, Parser parser, int flags) {
+                                  WMHtml.TagHandler tagHandler, Parser parser, int flags, int textSizeOffset) {
         mSource = source;
         mSpannableStringBuilder = new SpannableStringBuilder();
         mImageGetter = imageGetter;
         mTagHandler = tagHandler;
         mReader = parser;
         mFlags = flags;
+        mTextSizeOffset = textSizeOffset;
+
     }
 
     public Spanned convert() {
@@ -986,10 +994,10 @@ class HtmlToSpannedConverter implements ContentHandler {
         } else if (tag.equalsIgnoreCase("ol")) {
             startOL(mSpannableStringBuilder);
             startBlockElement(mSpannableStringBuilder, attributes, getMarginList());
-        } else if(tag.equalsIgnoreCase("ql")){
+        } else if (tag.equalsIgnoreCase("ql")) {
             startQL(mSpannableStringBuilder);
             startBlockElement(mSpannableStringBuilder, attributes, getMarginList());
-        }else if (tag.equalsIgnoreCase("sl")) {
+        } else if (tag.equalsIgnoreCase("sl")) {
             startSL(mSpannableStringBuilder);
             startBlockElement(mSpannableStringBuilder, attributes, getMarginList());
         } else if (tag.equalsIgnoreCase("li")) {
@@ -1293,9 +1301,9 @@ class HtmlToSpannedConverter implements ContentHandler {
             start(text, new Numeric());
         } else if (listTag.equals(WMHtml.UL)) {
             start(text, new Bullet());
-        } else if(listTag.equals(WMHtml.QL)){
+        } else if (listTag.equals(WMHtml.QL)) {
             start(text, new Quote());
-        }else if (listTag.equals(WMHtml.SL)) {
+        } else if (listTag.equals(WMHtml.SL)) {
             String type = attributes.getValue("", "type");
             String state = attributes.getValue("", "state");
             try {
@@ -1321,9 +1329,9 @@ class HtmlToSpannedConverter implements ContentHandler {
             end(text, Numeric.class, new WMListNumberSpan());
         } else if (listTag.equals(WMHtml.UL)) {
             end(text, Bullet.class, new WMListBulletSpan());
-        } else if(listTag.equals(WMHtml.QL)){
+        } else if (listTag.equals(WMHtml.QL)) {
             end(text, Quote.class, new WMQuoteSpan());
-        }else if (listTag.equals(WMHtml.SL)) {
+        } else if (listTag.equals(WMHtml.SL)) {
             ClickToSwitch clickToSwitch = getLast(text, ClickToSwitch.class);
             if (clickToSwitch != null) {
                 setSpanFromMark(text, clickToSwitch, new WMListClickToSwitchSpan(clickToSwitch.type, clickToSwitch.isCheck));
@@ -1450,7 +1458,7 @@ class HtmlToSpannedConverter implements ContentHandler {
 
         FontSize fontSize = getLast(text, FontSize.class);
         if (fontSize != null) {
-            setSpanFromMark(text, fontSize, new AbsoluteSizeSpan(fontSize.mFontSize, true));
+            setSpanFromMark(text, fontSize, new AbsoluteSizeSpan(fontSize.mFontSize + mTextSizeOffset, true));
         }
     }
 

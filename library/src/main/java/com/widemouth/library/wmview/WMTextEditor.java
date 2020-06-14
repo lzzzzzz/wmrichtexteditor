@@ -1,17 +1,16 @@
 package com.widemouth.library.wmview;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.text.InputType;
 import android.util.AttributeSet;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
-import com.widemouth.library.span.WMImageSpan;
 import com.widemouth.library.toolitem.WMToolAlignment;
 import com.widemouth.library.toolitem.WMToolBackgroundColor;
 import com.widemouth.library.toolitem.WMToolBold;
@@ -32,9 +31,6 @@ import com.widemouth.library.util.WMUtil;
 
 public class WMTextEditor extends LinearLayout {
 
-    public static final int TYPE_NON_EDITABLE = -1;
-
-    public static final int TYPE_RICH = 2;
 
     WMEditText editText;
     WMToolContainer toolContainer;
@@ -101,13 +97,12 @@ public class WMTextEditor extends LinearLayout {
         ((WMToolImage) toolImage).onActivityResult(data);
     }
 
-    public void setEditorType(int type) {
-        if (type == TYPE_NON_EDITABLE) {
-            toolContainer.setVisibility(GONE);
-            editText.setEditable(false);
-        } else if (type == TYPE_RICH) {
+    public void setEditable(boolean editable) {
+        editText.setEditable(editable);
+        if (editable) {
             toolContainer.setVisibility(VISIBLE);
-            editText.setEditable(true);
+        } else {
+            toolContainer.setVisibility(GONE);
         }
     }
 
@@ -119,15 +114,39 @@ public class WMTextEditor extends LinearLayout {
         return toolContainer;
     }
 
-    public void setMaxLines(int maxLines) {
+    public WMTextEditor setEditTextMaxLines(int maxLines) {
         editText.setMaxLines(maxLines);
+        return this;
     }
 
-    public void fromHtml(String html) {
+    public WMTextEditor setEditTextPadding(int left, int top, int right, int bottom) {
+        editText.setPadding(left, top, right, bottom);
+        return this;
+    }
+
+    public WMTextEditor setEditTextLineSpacing(float add, float mult) {
+        editText.setLineSpacing(add, mult);
+        return this;
+    }
+
+    public WMTextEditor fromHtml(String html) {
         editText.fromHtml(html);
+        return this;
+    }
+
+
+    public WMTextEditor fromHtml(String html, int textSizeOffset) {
+        editText.fromHtml(html, textSizeOffset);
+        return this;
     }
 
     public String getHtml() {
         return editText.getHtml();
     }
+
+    public WMTextEditor setupWithFragment(Fragment fragment) {
+        ((WMToolImage) toolImage).setupWithFragment(fragment);
+        return this;
+    }
+
 }

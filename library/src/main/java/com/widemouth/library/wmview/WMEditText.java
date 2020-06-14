@@ -84,14 +84,14 @@ public class WMEditText extends AppCompatEditText {
         this.setFocusableInTouchMode(true);
         this.requestFocus();
         this.setBackgroundColor(0);
-        int p = WMUtil.getPixelByDp(getContext(), 25);
-        this.setPadding(p, p, p, p);
-        int space = WMUtil.getPixelByDp(getContext(), 10);
-        this.setLineSpacing(space, 1);
-        this.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+//        int p = WMUtil.getPixelByDp(getContext(), 25);
+//        this.setPadding(p, p, p, p);
+//        int space = WMUtil.getPixelByDp(getContext(), 10);
+//        this.setLineSpacing(space, 1);
+//        this.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
         this.setInputType(EditorInfo.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_FLAG_MULTI_LINE
                 | EditorInfo.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        addTextChangedListener(textWatcher);
+//        addTextChangedListener(textWatcher);
     }
 
     @Override
@@ -131,11 +131,15 @@ public class WMEditText extends AppCompatEditText {
     }
 
     public void fromHtml(String html) {
+        fromHtml(html, 0);
+    }
+
+    public void fromHtml(String html, int textSizeOffset) {
         boolean current = editable;
         editable = false;
         WMHtml.ImageGetter imageGetter = new WMImageGetter(getContext(), this);
         WMHtml.TagHandler tagHandler = new WMTagHandler();
-        Spanned spanned = WMHtml.fromHtml(html, WMHtml.FROM_HTML_SEPARATOR_LINE_BREAK_PARAGRAPH, imageGetter, tagHandler);
+        Spanned spanned = WMHtml.fromHtml(html, WMHtml.FROM_HTML_SEPARATOR_LINE_BREAK_PARAGRAPH, imageGetter, tagHandler, textSizeOffset);
         if (spanned.length() > 0) {
             ((SpannableStringBuilder) spanned).delete(spanned.length() - 1, spanned.length());
         }
